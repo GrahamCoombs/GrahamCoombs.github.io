@@ -18,7 +18,7 @@ body {
 
 /* Main Container */
 .container {
-    width: 960px; /* Typical width for centered designs */
+    width: 70vw; /* Typical width for centered designs */
     background-color: white;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     border-radius: 10px; /* Rounded corners */
