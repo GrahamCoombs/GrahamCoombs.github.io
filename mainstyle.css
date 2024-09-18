@@ -1,3 +1,95 @@
-h1 {
-    color: red;
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: "Arial", sans-serif;
+    background: #e0e0e0; /* Light gray background */
+    color: #333; /* Text color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Main Container */
+.container {
+    width: 960px; /* Typical width for centered designs */
+    background-color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px;
+    text-align: center;
+}
+
+/* Header */
+header {
+    padding: 20px;
+    background: linear-gradient(45deg, #ff7f50, #ff6347); /* Gradients were popular */
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* Navigation Bar */
+nav ul {
+    list-style: none;
+    padding: 10px 0;
+    background: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #555;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+nav ul li a:hover {
+    background-color: #eee;
+}
+
+/* Main Content */
+.main-content {
+    padding: 20px;
+}
+
+.main-content h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.main-content p {
+    font-size: 1.2em;
+    line-height: 1.6;
+}
+
+/* Footer */
+footer {
+    padding: 10px;
+    background: #f8f8f8;
+    border-top: 1px solid #ddd;
+    color: #777;
+    font-size: 0.9em;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+footer a {
+    color: #777;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
 }
