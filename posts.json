@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "title": "Blog Post Title 1",
+        "date": "January 10, 2024",
+        "summary": "This is a short summary of the first blog post.",
+        "content": "<p>This is the full content of the first blog post. It contains HTML elements like paragraphs, links, and more.</p>"
+    },
+    {
+        "id": 2,
+        "title": "Blog Post Title 2",
+        "date": "February 2, 2024",
+        "summary": "This is a short summary of the second blog post.",
+        "content": "<p>This is the full content of the second blog post.</p>"
+    }
+]

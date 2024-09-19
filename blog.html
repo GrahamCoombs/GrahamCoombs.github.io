@@ -31,20 +31,10 @@
             </ul>
         </nav>
 
-        <!-- Main content section -->
+        <!-- Blog Content Section -->
         <div class="main-content">
-            <!-- This section contains the main content of the page -->
-            <h1>Main Content Area</h1>
-            <p>
-                I want to test how a website like this would be made, especially since I don't have a lot of experience.
-                I want to write a blog that would focus on the things I already do, whether that is school or other hobbies.
-                One more test line should be good
-            </p>
-            <p>
-                Chat GPT wrote this part:
-                Notice how the width of this container is fixed to 960px, which was a common width for many websites of the time. 
-                The box-shadow and border-radius provide a subtle 3D effect to the container, which was a trend during that period.
-            </p>
+            <h1>Latest Blog Posts</h1>
+            <div id="blog-posts"></div> <!-- This is where blog posts will be loaded -->
         </div>
 
         <!-- Footer section -->
@@ -54,6 +44,28 @@
         </footer>
 
     </div>
+
+    <!-- JavaScript to Load Blog Posts Dynamically -->
+    <script>
+        // Fetch the JSON file containing the blog posts
+        fetch('posts.json')
+            .then(response => response.json()) // Parse the JSON
+            .then(posts => {
+                const postsContainer = document.getElementById('blog-posts');
+                posts.forEach(post => {
+                    // Create an HTML block for each post
+                    const postElement = document.createElement('div');
+                    postElement.classList.add('blog-post');
+                    postElement.innerHTML = `
+                        <h2><a href="post.html?id=${post.id}">${post.title}</a></h2>
+                        <p>Published on ${post.date}</p>
+                        <p>${post.summary}</p>
+                    `;
+                    postsContainer.appendChild(postElement);
+                });
+            })
+            .catch(error => console.error('Error loading blog posts:', error));
+    </script>
 
 </body>
 </html>

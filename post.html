@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Graham Coombs' Wsbite</title>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="mainstyle.css">
+</head>
+<body>
+
+    <!-- Main container to center content on the page -->
+    <div class="container">
+        
+        <!-- Blog Header -->
+        <header>
+            <h1 id="post-title">Loading...</h1>
+            <p id="post-date"></p>
+        </header>
+
+        <!-- Navigation bar -->
+        <nav>
+            <!-- Unordered list that creates horizontal navigation links -->
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <!-- Blog Post Content -->
+        <div class="main-content" id="post-content">
+            <p>Loading content...</p>
+        </div>
+
+        <!-- Footer section -->
+        <footer>
+            <!-- Footer uses light gray background, smaller font size, and a horizontal layout -->
+            <p>&copy; GrahamCoombs.guthub.io | <a href="#privacy">This should be a privacy button</a> | <a href="#terms">This should be a TOS</a></p>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript to Load the Post Dynamically -->
+    <script>
+        // Get the query string parameter (e.g., ?id=1)
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        // Fetch the JSON file containing the blog posts
+        fetch('posts.json')
+            .then(response => response.json())
+            .then(posts => {
+                const post = posts.find(p => p.id == postId);
+                if (post) {
+                    document.getElementById('post-title').innerText = post.title;
+                    document.getElementById('post-date').innerText = 'Published on ' + post.date;
+                    document.getElementById('post-content').innerHTML = post.content;
+                } else {
+                    document.getElementById('post-content').innerHTML = '<p>Post not found.</p>';
+                }
+            })
+            .catch(error => console.error('Error loading post:', error));
+    </script>
+
+</body>
+</html>
