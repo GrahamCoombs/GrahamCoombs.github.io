@@ -45,24 +45,37 @@
 
     <!-- JavaScript to Load the Post Dynamically -->
     <script>
+
+        // Helper function to parse and compare dates
+        function parseDate(dateString) {
+            return new Date(dateString);
+        }
+
         // Get the query string parameter (e.g., ?id=1)
         const urlParams = new URLSearchParams(window.location.search);
         const postId = urlParams.get('id');
 
         // Fetch the JSON file containing the blog posts
         fetch('posts.json')
-            .then(response => response.json())
+            .then(response => response.json()) // Parse JSON
             .then(posts => {
-                const post = posts.find(p => p.id == postId);
-                if (post) {
-                    document.getElementById('post-title').innerText = post.title;
-                    document.getElementById('post-date').innerText = 'Published on ' + post.date;
-                    document.getElementById('post-content').innerHTML = post.content;
-                } else {
-                    document.getElementById('post-content').innerHTML = '<p>Post not found.</p>';
-                }
+                // Sort posts by date (newest to oldest)
+                posts.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+
+                const postsContainer = document.getElementById('blog-posts');
+                posts.forEach(post => {
+                    // Create an HTML block for each post
+                    const postElement = document.createElement('div');
+                    postElement.classList.add('blog-post');
+                    postElement.innerHTML = `
+                        <h2><a href="post.html?id=${post.id}">${post.title}</a></h2>
+                        <p>Published on ${post.date}</p>
+                        <p>${post.summary}</p>
+                    `;
+                    postsContainer.appendChild(postElement);
+                });
             })
-            .catch(error => console.error('Error loading post:', error));
+            .catch(error => console.error('Error loading blog posts:', error));
     </script>
 
 </body>
