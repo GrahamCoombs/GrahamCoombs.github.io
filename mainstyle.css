@@ -20,7 +20,7 @@ body {
     display: flex;
     flex-direction: column; /* Make the sidebar a vertical flexbox */
     justify-content: space-between; /* Space out content (nav + footer) */
-    width: 180px; /* Slightly narrower */
+    width: 13%; /* Slightly narrower */
     background-color: #fff; /* White background for sidebar */
     color: #333; /* Dark gray text */
     padding: 20px;
@@ -29,6 +29,7 @@ body {
     left: 5%; /* Gap from the left edge */
     height: 100vh; /* Full height */
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
+    max-width: 240px;
 }
 
 .sidebar img {
@@ -75,13 +76,14 @@ body {
 
 /* Main Container */
 .container {
-    width: 70vw; /* Slightly wider content */
+    width: 64%; /* Slightly wider content */
     background-color: white;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     border-radius: 10px;
     padding: 20px;
     text-align: center;
-    margin-left: 210px; /* Adjusted to bring content closer to sidebar */
+    margin-left: 3%; /* Adjusted to bring content closer to sidebar */
+    max-width: 1200px;
 }
 
 .container h1 {
