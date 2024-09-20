@@ -4,67 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Graham Coombs' Wsbite</title>
+    <title>Graham Coombs' Website</title>
     <!-- Link to external CSS file -->
     <link rel="stylesheet" href="mainstyle.css">
+    <!-- JavaScript to Load Blog Posts Dynamically -->
+    <script src="blogLoader.js"></script>
 </head>
 <body>
-
-    <!-- Main container to center content on the page -->
-    <div class="container">
-        
-        <!-- Header section -->
-        <header>
-            <!-- This section uses a gradient background, white text, and rounded corners -->
-            <h1>Hello World</h1>
-            <p>Testing</p>
-        </header>
-
     <!-- Sidebar -->
     <div class="sidebar">
-        <img src="your-image.jpg" alt="Sidebar Image">
+        <!-- Add a placeholder image, replace with your image -->
+        <img src="grahamface.png" alt="Sidebar Image">
+        
+        <!-- Navigation list -->
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="blog.html">Blog</a></li>
             <li><a href="about.html">About</a></li>
         </ul>
+
+        <!-- Footer content moved to the sidebar -->
+            <footer>
+                <p>&copy; Graham Coombs</p>
+                <p><a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Service</a></p>
+            </footer>
     </div>
+    <!-- Main container to center content on the page -->
+    <div class="container">
 
         <!-- Blog Content Section -->
         <div class="main-content">
             <h1>Latest Blog Posts</h1>
             <div id="blog-posts"></div> <!-- This is where blog posts will be loaded -->
         </div>
-
-        <!-- Footer section -->
-        <footer>
-            <!-- Footer uses light gray background, smaller font size, and a horizontal layout -->
-            <p>&copy; GrahamCoombs.guthub.io | <a href="#privacy">This should be a privacy button</a> | <a href="#terms">This should be a TOS</a></p>
-        </footer>
+        
+        </div>
 
     </div>
-
-        <!-- JavaScript to Load Blog Posts Dynamically -->
-    <script>
-        // Fetch the JSON file containing the blog posts
-        fetch('posts.json')
-            .then(response => response.json()) // Parse the JSON
-            .then(posts => {
-                const postsContainer = document.getElementById('blog-posts');
-                posts.forEach(post => {
-                    // Create an HTML block for each post
-                    const postElement = document.createElement('div');
-                    postElement.classList.add('blog-post');
-                    postElement.innerHTML = `
-                        <h2><a href="post.html?id=${post.id}">${post.title}</a></h2>
-                        <p>Published on ${post.date}</p>
-                        <p>${post.summary}</p>
-                    `;
-                    postsContainer.appendChild(postElement);
-                });
-            })
-            .catch(error => console.error('Error loading blog posts:', error));
-    </script>
-
 </body>
 </html>
