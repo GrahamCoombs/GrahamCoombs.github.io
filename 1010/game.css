@@ -1,3 +1,4 @@
+/* Basic page styling */
 body {
     display: flex;
     flex-direction: column;
@@ -7,11 +8,13 @@ body {
     user-select: none;
 }
 
+/* Main game container */
 #game-container {
     margin: 20px;
     position: relative;
 }
 
+/* Grid styling */
 #grid {
     display: grid;
     grid-template-columns: repeat(10, 40px);
@@ -21,14 +24,17 @@ body {
     border-radius: 5px;
 }
 
+/* Individual cell styling */
 .cell {
     width: 40px;
     height: 40px;
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 3px;
+    transition: background-color 0.2s;
 }
 
+/* Cell highlighting during drag */
 .cell.highlight {
     background-color: #e0e0e0;
 }
@@ -37,10 +43,24 @@ body {
     background-color: #ffcdd2;
 }
 
-.filled {
-    background-color: #4CAF50;
+/* Different colors for different piece shapes */
+.filled.single {
+    background-color: #FF4081; /* Pink for single squares */
 }
 
+.filled.double {
+    background-color: #3F51B5; /* Indigo for 2x2 squares */
+}
+
+.filled.line {
+    background-color: #009688; /* Teal for line pieces */
+}
+
+.filled.l-shape {
+    background-color: #FF9800; /* Orange for L shapes */
+}
+
+/* Pieces container layout */
 #pieces-container {
     display: flex;
     gap: 20px;
@@ -48,6 +68,7 @@ body {
     justify-content: center;
 }
 
+/* Individual piece preview styling */
 .piece-preview {
     display: grid;
     gap: 1px;
@@ -58,6 +79,7 @@ body {
     position: relative;
 }
 
+/* Preview cell styling */
 .preview-cell {
     width: 30px;
     height: 30px;
@@ -65,22 +87,13 @@ body {
     border: 1px solid #ddd;
 }
 
-.preview-cell.filled {
-    background-color: #4CAF50;
-}
-
-.dragging {
-    opacity: 0.8;
-    position: absolute;
-    pointer-events: none;
-    z-index: 1000;
-}
-
+/* Score display */
 #score {
     font-size: 24px;
     margin: 20px;
 }
 
+/* Game over overlay */
 #game-over {
     position: fixed;
     top: 0;
@@ -94,6 +107,7 @@ body {
     z-index: 2000;
 }
 
+/* Game over popup content */
 .game-over-content {
     background-color: white;
     padding: 40px;
@@ -101,6 +115,7 @@ body {
     text-align: center;
 }
 
+/* Restart button styling */
 #restart-button {
     padding: 10px 20px;
     font-size: 18px;
@@ -110,6 +125,7 @@ body {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 20px;
+    transition: background-color 0.2s;
 }
 
 #restart-button:hover {

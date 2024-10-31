@@ -1,11 +1,12 @@
 class Game {
     constructor() {
+        // Initialize game state
         this.grid = Array(10).fill().map(() => Array(10).fill(0));
         this.score = 0;
         this.pieces = [];
         this.draggedPiece = null;
-        this.draggedElement = null;
-        this.dragOffset = { x: 0, y: 0 };
+        
+        // Set up the game board and pieces
         this.initGrid();
         this.generatePieces();
         this.updateScore();
@@ -18,6 +19,7 @@ class Game {
         });
     }
 
+    // Reset the game state for a new game
     restart() {
         this.grid = Array(10).fill().map(() => Array(10).fill(0));
         this.score = 0;
@@ -28,9 +30,12 @@ class Game {
         document.getElementById('game-over').style.display = 'none';
     }
 
+    // Initialize the game grid with event listeners
     initGrid() {
         const gridElement = document.getElementById('grid');
         gridElement.innerHTML = '';
+        
+        // Create the 10x10 grid cells
         for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {
                 const cell = document.createElement('div');
@@ -41,7 +46,7 @@ class Game {
             }
         }
 
-        // Add grid event listeners for drag and drop
+        // Add drag and drop event listeners to the grid
         gridElement.addEventListener('dragover', (e) => {
             e.preventDefault();
             if (this.draggedPiece !== null) {
@@ -57,25 +62,29 @@ class Game {
         });
     }
 
+    // Generate three random pieces for the next turn
     generatePieces() {
+        // Define all possible pieces with their types
         const pieces = [
             // Single square
-            [[1]],
+            { shape: [[1]], type: 'single' },
             // 2x2 square
-            [[1,1],
-             [1,1]],
-            // Line pieces
-            [[1,1,1]],
-            [[1],
-             [1],
-             [1]],
+            { shape: [[1,1],
+                     [1,1]], type: 'double' },
+            // Horizontal line
+            { shape: [[1,1,1]], type: 'line' },
+            // Vertical line
+            { shape: [[1],
+                     [1],
+                     [1]], type: 'line' },
             // L pieces
-            [[1,0],
-             [1,1]],
-            [[1,1],
-             [1,0]],
+            { shape: [[1,0],
+                     [1,1]], type: 'l-shape' },
+            { shape: [[1,1],
+                     [1,0]], type: 'l-shape' },
         ];
 
+        // Select three random pieces
         this.pieces = [];
         for (let i = 0; i < 3; i++) {
             this.pieces.push(pieces[Math.floor(Math.random() * pieces.length)]);
@@ -88,6 +97,7 @@ class Game {
         }
     }
 
+    // Render the available pieces in the pieces container
     renderPieces() {
         const container = document.getElementById('pieces-container');
         container.innerHTML = '';
@@ -95,22 +105,23 @@ class Game {
         this.pieces.forEach((piece, index) => {
             const pieceElement = document.createElement('div');
             pieceElement.className = 'piece-preview';
-            pieceElement.style.gridTemplateColumns = `repeat(${piece[0].length}, 30px)`;
+            pieceElement.style.gridTemplateColumns = `repeat(${piece.shape[0].length}, 30px)`;
             pieceElement.draggable = true;
             pieceElement.dataset.index = index;
             
-            for (let i = 0; i < piece.length; i++) {
-                for (let j = 0; j < piece[0].length; j++) {
+            // Create the visual representation of the piece
+            for (let i = 0; i < piece.shape.length; i++) {
+                for (let j = 0; j < piece.shape[0].length; j++) {
                     const cell = document.createElement('div');
                     cell.className = 'preview-cell';
-                    if (piece[i][j] === 1) {
-                        cell.classList.add('filled');
+                    if (piece.shape[i][j] === 1) {
+                        cell.classList.add('filled', piece.type);
                     }
                     pieceElement.appendChild(cell);
                 }
             }
             
-            // Add drag event listeners
+            // Add drag event listeners to the piece
             pieceElement.addEventListener('dragstart', (e) => {
                 this.draggedPiece = { piece, index };
                 pieceElement.style.opacity = '0.4';
@@ -126,10 +137,12 @@ class Game {
         });
     }
 
+    // Handle the drag over event for piece placement preview
     handleDragOver(e) {
         e.preventDefault();
         this.clearHighlights();
         
+        // Calculate grid position from mouse coordinates
         const gridRect = document.getElementById('grid').getBoundingClientRect();
         const cellSize = 42; // cell size + gap
         const row = Math.floor((e.clientY - gridRect.top) / cellSize);
@@ -137,11 +150,12 @@ class Game {
         
         if (this.draggedPiece) {
             const piece = this.draggedPiece.piece;
-            const canPlace = this.canPlacePiece(row, col, piece);
+            const canPlace = this.canPlacePiece(row, col, piece.shape);
             
-            for (let i = 0; i < piece.length; i++) {
-                for (let j = 0; j < piece[0].length; j++) {
-                    if (piece[i][j] === 1) {
+            // Show placement preview
+            for (let i = 0; i < piece.shape.length; i++) {
+                for (let j = 0; j < piece.shape[0].length; j++) {
+                    if (piece.shape[i][j] === 1) {
                         const targetCell = this.getCellElement(row + i, col + j);
                         if (targetCell) {
                             targetCell.classList.add(canPlace ? 'highlight' : 'invalid');
@@ -152,16 +166,18 @@ class Game {
         }
     }
 
+    // Handle the drop event for piece placement
     handleDrop(e) {
         const gridRect = document.getElementById('grid').getBoundingClientRect();
         const cellSize = 42; // cell size + gap
         const row = Math.floor((e.clientY - gridRect.top) / cellSize);
         const col = Math.floor((e.clientX - gridRect.left) / cellSize);
 
-        if (this.draggedPiece && this.canPlacePiece(row, col, this.draggedPiece.piece)) {
+        if (this.draggedPiece && this.canPlacePiece(row, col, this.draggedPiece.piece.shape)) {
             this.placePiece(row, col, this.draggedPiece.piece);
             this.pieces.splice(this.draggedPiece.index, 1);
             
+            // Generate new pieces if all current pieces are used
             if (this.pieces.length === 0) {
                 this.generatePieces();
             } else {
@@ -176,21 +192,24 @@ class Game {
         this.clearHighlights();
     }
 
+    // Get a cell element by its grid coordinates
     getCellElement(row, col) {
         return document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
     }
 
+    // Clear all highlight effects from the grid
     clearHighlights() {
         document.querySelectorAll('.cell').forEach(cell => {
             cell.classList.remove('highlight', 'invalid');
         });
     }
 
+    // Check if any remaining piece can be placed on the board
     canPlaceAnyPiece() {
         for (let piece of this.pieces) {
             for (let i = 0; i < 10; i++) {
                 for (let j = 0; j < 10; j++) {
-                    if (this.canPlacePiece(i, j, piece)) {
+                    if (this.canPlacePiece(i, j, piece.shape)) {
                         return true;
                     }
                 }
@@ -199,17 +218,19 @@ class Game {
         return false;
     }
 
+    // Handle game over state
     gameOver() {
         document.getElementById('game-over').style.display = 'flex';
         document.getElementById('final-score').textContent = this.score;
     }
 
-    canPlacePiece(row, col, piece) {
-        if (row < 0 || col < 0 || row + piece.length > 10 || col + piece[0].length > 10) return false;
+    // Check if a piece can be placed at the given position
+    canPlacePiece(row, col, shape) {
+        if (row < 0 || col < 0 || row + shape.length > 10 || col + shape[0].length > 10) return false;
         
-        for (let i = 0; i < piece.length; i++) {
-            for (let j = 0; j < piece[0].length; j++) {
-                if (piece[i][j] === 1 && this.grid[row + i][col + j] === 1) {
+        for (let i = 0; i < shape.length; i++) {
+            for (let j = 0; j < shape[0].length; j++) {
+                if (shape[i][j] === 1 && this.grid[row + i][col + j] === 1) {
                     return false;
                 }
             }
@@ -217,11 +238,13 @@ class Game {
         return true;
     }
 
+    // Place a piece on the grid
     placePiece(row, col, piece) {
-        for (let i = 0; i < piece.length; i++) {
-            for (let j = 0; j < piece[0].length; j++) {
-                if (piece[i][j] === 1) {
-                    this.grid[row + i][col + j] = 1;
+        for (let i = 0; i < piece.shape.length; i++) {
+            for (let j = 0; j < piece.shape[0].length; j++) {
+                if (piece.shape[i][j] === 1) {
+                    // Store both the filled state and the piece type
+                    this.grid[row + i][col + j] = { filled: 1, type: piece.type };
                 }
             }
         }
@@ -229,12 +252,13 @@ class Game {
         this.renderGrid();
     }
 
+    // Check for completed lines (rows and columns)
     checkLines() {
         let linesCleared = 0;
         
         // Check rows
         for (let i = 0; i < 10; i++) {
-            if (this.grid[i].every(cell => cell === 1)) {
+            if (this.grid[i].every(cell => cell !== 0 && cell.filled === 1)) {
                 this.grid[i] = Array(10).fill(0);
                 linesCleared++;
             }
@@ -242,7 +266,7 @@ class Game {
         
         // Check columns
         for (let j = 0; j < 10; j++) {
-            if (this.grid.every(row => row[j] === 1)) {
+            if (this.grid.every(row => row[j] !== 0 && row[j].filled === 1)) {
                 for (let i = 0; i < 10; i++) {
                     this.grid[i][j] = 0;
                 }
@@ -250,6 +274,7 @@ class Game {
             }
         }
         
+        // Update score for cleared lines
         if (linesCleared > 0) {
             this.score += linesCleared * 10;
             this.updateScore();
