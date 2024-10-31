@@ -78,8 +78,9 @@ class Game {
                      [1],
                      [1]], type: 'line' },
             // L pieces
-            { shape: [[1,0],
-                     [1,1]], type: 'l-shape' },
+            { shape: [[1,0,0],
+                     [1,0,0],
+                     [1,1,1]], type: 'l-shape' },
             { shape: [[1,1],
                      [1,0]], type: 'l-shape' },
         ];
@@ -258,7 +259,7 @@ class Game {
         
         // Check rows
         for (let i = 0; i < 10; i++) {
-            if (this.grid[i].every(cell => cell !== 0 && cell.filled === 1)) {
+            if (this.grid[i].every(cell => cell !== 0)) {
                 this.grid[i] = Array(10).fill(0);
                 linesCleared++;
             }
@@ -266,7 +267,7 @@ class Game {
         
         // Check columns
         for (let j = 0; j < 10; j++) {
-            if (this.grid.every(row => row[j] !== 0 && row[j].filled === 1)) {
+            if (this.grid.every(row => row[j] !== 0)) {
                 for (let i = 0; i < 10; i++) {
                     this.grid[i][j] = 0;
                 }
@@ -286,7 +287,14 @@ class Game {
         cells.forEach(cell => {
             const row = parseInt(cell.dataset.row);
             const col = parseInt(cell.dataset.col);
-            cell.classList.toggle('filled', this.grid[row][col] === 1);
+
+            //remove existing classes
+            cell.classList.remove('filled', 'single', 'double', 'line', 'l-shape');
+
+            if (this.grid[row][col] !== 0) {
+                cell.classList.add('filled');
+                cell.classList.add(this.grid[row][col].type);  // Add the piece type class
+            }
         });
     }
 
