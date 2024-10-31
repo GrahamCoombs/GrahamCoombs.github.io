@@ -65,24 +65,61 @@ class Game {
     // Generate three random pieces for the next turn
     generatePieces() {
         // Define all possible pieces with their types
+        //'single', 'double', 'triple', 'two-line', 'line', 'four-line', 'five-line', 'three-l-shape', 'l-shape'
         const pieces = [
             // Single square
             { shape: [[1]], type: 'single' },
             // 2x2 square
             { shape: [[1,1],
                      [1,1]], type: 'double' },
-            // Horizontal line
+            // 3x3 square
+            { shape: [[1,1,1],
+                     [1,1,1],
+                     [1,1,1]], type: 'triple'},
+            // 2 Horizontal line
+            { shape: [[1,1]], type: 'two-line' },
+            { shape: [[1],
+                     [1]], type: 'two-line' },
+            // 3 Horizontal line
             { shape: [[1,1,1]], type: 'line' },
-            // Vertical line
             { shape: [[1],
                      [1],
                      [1]], type: 'line' },
-            // L pieces
+            // 4 Horizontal line
+            { shape: [[1,1,1,1]], type: 'four-line'},
+            { shape: [[1],
+                     [1],
+                     [1],
+                     [1]], type: 'four-line' },
+            // 5 Horizontal line
+            { shape: [[1,1,1,1,1]], type: 'five-line'},
+            { shape: [[1],
+                     [1],
+                     [1],
+                     [1],
+                     [1]], type: 'five-line' },
+            // 3L pieces
             { shape: [[1,0,0],
                      [1,0,0],
-                     [1,1,1]], type: 'l-shape' },
+                     [1,1,1]], type: 'three-l-shape' },
+            { shape: [[1,1,1],
+                     [1,0,0],
+                     [1,0,0]], type: 'three-l-shape' },
+            { shape: [[0,0,1],
+                     [0,0,1],
+                     [1,1,1]], type: 'three-l-shape' },
+            { shape: [[1,1,1],
+                     [0,0,1],
+                     [0,0,1]], type: 'three-l-shape' },
+            // L pieces
+            { shape: [[1,0],
+                     [1,1]], type: 'l-shape' },
             { shape: [[1,1],
                      [1,0]], type: 'l-shape' },
+            { shape: [[1,1],
+                     [0,1]], type: 'l-shape' },
+            { shape: [[0,1],
+                     [1,1]], type: 'l-shape' },
         ];
 
         // Select three random pieces
@@ -231,7 +268,7 @@ class Game {
         
         for (let i = 0; i < shape.length; i++) {
             for (let j = 0; j < shape[0].length; j++) {
-                if (shape[i][j] === 1 && this.grid[row + i][col + j] === 1) {
+                if (shape[i][j] === 1 && this.grid[row + i][col + j] !== 0) {
                     return false;
                 }
             }
@@ -256,11 +293,14 @@ class Game {
     // Check for completed lines (rows and columns)
     checkLines() {
         let linesCleared = 0;
+        let clearedCells = new Set();
         
         // Check rows
         for (let i = 0; i < 10; i++) {
             if (this.grid[i].every(cell => cell !== 0)) {
-                this.grid[i] = Array(10).fill(0);
+                for (let j = 0; j < 10; j++) {
+                    clearedCells.add(`${i},${j}`)
+                }
                 linesCleared++;
             }
         }
@@ -269,12 +309,17 @@ class Game {
         for (let j = 0; j < 10; j++) {
             if (this.grid.every(row => row[j] !== 0)) {
                 for (let i = 0; i < 10; i++) {
-                    this.grid[i][j] = 0;
+                    clearedCells.add(`${i},${j}`)
                 }
                 linesCleared++;
             }
         }
         
+        clearedCells.forEach(coord => {
+            const [row,col] = coord.split(',').map(Number);
+            this.grid[row][col] = 0;
+        });
+
         // Update score for cleared lines
         if (linesCleared > 0) {
             this.score += linesCleared * 10;
@@ -289,7 +334,7 @@ class Game {
             const col = parseInt(cell.dataset.col);
 
             //remove existing classes
-            cell.classList.remove('filled', 'single', 'double', 'line', 'l-shape');
+            cell.classList.remove('filled', 'single', 'double', 'triple', 'two-line', 'line', 'four-line', 'five-line', 'three-l-shape', 'l-shape');
 
             if (this.grid[row][col] !== 0) {
                 cell.classList.add('filled');

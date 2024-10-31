@@ -4,7 +4,7 @@ body {
     flex-direction: column;
     align-items: center;
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: lightgray;
     user-select: none;
 }
 
@@ -43,21 +43,43 @@ body {
     background-color: #ffcdd2;
 }
 
+/*'single', 'double', 'triple', 'two-line', 'line', 'four-line', 'five-line', 'three-l-shape', 'l-shape'
+
 /* Different colors for different piece shapes */
 .filled.single {
-    background-color: #FF4081; /* Pink for single squares */
+    background-color: indigo; /* Pink for single squares */
 }
 
 .filled.double {
-    background-color: #3F51B5; /* Indigo for 2x2 squares */
+    background-color: greenyellow; /* Indigo for 2x2 squares */
+}
+
+.filled.triple {
+    background-color: darkturquoise; /* Indigo for 2x2 squares */
+}
+
+.filled.two-line {
+    background-color: gold;
 }
 
 .filled.line {
-    background-color: #009688; /* Teal for line pieces */
+    background-color: sandybrown; /* Teal for line pieces */
+}
+
+.filled.four-line {
+    background-color: hotpink; /* Indigo for 2x2 squares */
+}
+
+.filled.five-line {
+    background-color: indianred; /* Indigo for 2x2 squares */
+}
+
+.filled.three-l-shape {
+    background-color: cornflowerblue; /* Orange for L shapes */
 }
 
 .filled.l-shape {
-    background-color: #FF9800; /* Orange for L shapes */
+    background-color: forestgreen; /* Orange for L shapes */
 }
 
 /* Pieces container layout */
